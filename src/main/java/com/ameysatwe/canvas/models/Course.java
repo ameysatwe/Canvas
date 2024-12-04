@@ -5,6 +5,20 @@ import java.util.List;
 
 @Entity
 @Table(name = "courses")
+@NamedQueries({
+        @NamedQuery(
+                name = "Course.findByInstructor",
+                query = "SELECT c FROM Course c WHERE c.instructor.id = :instructorId"
+        ),
+        @NamedQuery(
+                name = "Course.findByTA",
+                query = "SELECT c FROM Course c WHERE c.ta.id = :taId"
+        ),
+        @NamedQuery(
+                name = "Course.findByTitle",
+                query = "SELECT c FROM Course c WHERE c.title = :title"
+        )
+})
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

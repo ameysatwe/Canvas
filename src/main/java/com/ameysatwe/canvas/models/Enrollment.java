@@ -3,6 +3,20 @@ package com.ameysatwe.canvas.models;
 import jakarta.persistence.*;
 @Entity
 @Table(name = "enrollments")
+@NamedQueries({
+        @NamedQuery(
+                name = "Enrollment.findByCourse",
+                query = "SELECT e FROM Enrollment e WHERE e.course.id = :courseId"
+        ),
+        @NamedQuery(
+                name = "Enrollment.findByUser",
+                query = "SELECT e FROM Enrollment e WHERE e.user.id = :userId"
+        ),
+        @NamedQuery(
+                name = "Enrollment.countByCourse",
+                query = "SELECT COUNT(e) FROM Enrollment e WHERE e.course.id = :courseId"
+        )
+})
 public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

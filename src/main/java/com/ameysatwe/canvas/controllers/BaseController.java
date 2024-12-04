@@ -19,8 +19,6 @@ public class BaseController {
     @GetMapping("/home")
     public ModelAndView GetMapping(User user, ModelMap modelMap){
         user.setEmail("asatwe@gmail.com");
-//        modelMap.addAttribute(user);
-//        return "hello-world";
         ModelAndView modelAndView = new ModelAndView("hello-world");
         modelAndView.addObject("user",user);
         return modelAndView;

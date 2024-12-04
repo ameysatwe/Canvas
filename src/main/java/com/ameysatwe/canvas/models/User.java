@@ -1,11 +1,27 @@
 package com.ameysatwe.canvas.models;
 
 import jakarta.persistence.*;
-import java.util.List;
+
 
 @Entity
 @Table(name = "users")
-public class User {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Using Single Table Inheritance
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+@NamedQueries({
+        @NamedQuery(
+                name = "User.findByRole",
+                query = "SELECT u FROM User u WHERE u.role = :role"
+        ),
+        @NamedQuery(
+                name = "User.findByEmail",
+                query = "SELECT u FROM User u WHERE u.email = :email"
+        ),
+        @NamedQuery(
+                name = "User.findAllTAs",
+                query = "SELECT u FROM User u WHERE u.role = 'TA'"
+        )
+})
+public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,16 +37,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role; // STUDENT, INSTRUCTOR, ADMIN, TA
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Enrollment> enrollments;
-
-    @OneToMany(mappedBy = "ta", cascade = CascadeType.ALL)
-    private List<Course> assignedCourses; // Courses assigned to this TA
-
-    @OneToMany(mappedBy = "grader", cascade = CascadeType.ALL)
-    private List<Submission> gradedSubmissions; // Submissions graded by this TA
+    private Role role;
 
     public Long getId() {
         return id;
@@ -71,35 +78,5 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
-
-    public List<Enrollment> getEnrollments() {
-        return enrollments;
-    }
-
-    public void setEnrollments(List<Enrollment> enrollments) {
-        this.enrollments = enrollments;
-    }
-
-    public List<Course> getAssignedCourses() {
-        return assignedCourses;
-    }
-
-    public void setAssignedCourses(List<Course> assignedCourses) {
-        this.assignedCourses = assignedCourses;
-    }
-
-    public List<Submission> getGradedSubmissions() {
-        return gradedSubmissions;
-    }
-
-    public void setGradedSubmissions(List<Submission> gradedSubmissions) {
-        this.gradedSubmissions = gradedSubmissions;
-    }
 }
 
-enum Role {
-    STUDENT,
-    INSTRUCTOR,
-    ADMIN,
-    TA
-}
