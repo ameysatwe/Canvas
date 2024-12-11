@@ -11,9 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class BaseController {
 
-    @GetMapping("/")
+    @GetMapping("/login")
     public String getMapping(){
-        return "index";
+        return "login";
     }
 
     @GetMapping("/home")

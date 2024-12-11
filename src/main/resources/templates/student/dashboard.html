@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h1 class="mb-4">Student Dashboard</h1>
+  <div class="card shadow-sm p-3">
+    <div th:if="${#lists.isEmpty(enrollments)}" class="alert alert-warning">
+      <p>No courses registered. <a href="/student/register" class="alert-link">Register for courses</a></p>
+    </div>
+    <div th:if="${!#lists.isEmpty(enrollments)}">
+      <h2>Your Registered Courses</h2>
+      <ul class="list-group">
+        <li th:each="enrollment : ${enrollments}" class="list-group-item">
+          <strong th:text="${enrollment.course.name}"></strong>
+          <span class="badge bg-success ms-2" th:text="${enrollment.status}"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

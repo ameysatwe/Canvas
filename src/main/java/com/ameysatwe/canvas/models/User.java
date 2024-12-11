@@ -1,6 +1,10 @@
 package com.ameysatwe.canvas.models;
 
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 
 
 @Entity
@@ -21,7 +25,8 @@ import jakarta.persistence.*;
                 query = "SELECT u FROM User u WHERE u.role = 'TA'"
         )
 })
-public abstract class User {
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,6 +43,17 @@ public abstract class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @Column(nullable = false)
+    private boolean isApproved = false;
+
+    public boolean isApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(boolean approved) {
+        isApproved = approved;
+    }
 
     public Long getId() {
         return id;
@@ -68,6 +84,8 @@ public abstract class User {
     }
 
     public void setPassword(String password) {
+//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+//       this.password = passwordEncoder.encode(password);
         this.password = password;
     }
 
