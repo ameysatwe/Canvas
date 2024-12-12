@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="col-md-9 p-5">
+    <h1>Instructor Dashboard</h1>
+    <h3>All Courses</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Title</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course : ${courses}">
+            <td th:text="${course.getId()}"></td>
+            <td th:text="${course.getTitle()}"></td>
+            <td th:text="${course.getDescription()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

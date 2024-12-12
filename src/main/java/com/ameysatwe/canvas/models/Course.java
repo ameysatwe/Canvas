@@ -2,6 +2,7 @@ package com.ameysatwe.canvas.models;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "courses")
@@ -102,6 +103,4 @@ public class Course {
 
 
 
-    // Getters and Setters
-    // Constructors
 }

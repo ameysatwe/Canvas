@@ -1,5 +1,6 @@
 package com.ameysatwe.canvas.DAO;
 
+import com.ameysatwe.canvas.models.Instructor;
 import com.ameysatwe.canvas.models.Role;
 import com.ameysatwe.canvas.models.Student;
 import com.ameysatwe.canvas.models.User;
@@ -11,6 +12,8 @@ public interface UserDao {
     Optional<User> findByEmail(String email);
     List<User> findAllTAs();
     void save(Student user);
+
+    void saveInstructor(Instructor instructor);
     Optional<User> findById(Long id);
     void deleteById(Long id);
 
@@ -18,5 +21,7 @@ public interface UserDao {
 
     List<User> findUnapprovedUsers();
     void approveUser(Long userId);
+
+    Optional<Instructor> findInstructorByEmail(String email);
 
 }

@@ -2,6 +2,7 @@ package com.ameysatwe.canvas.DAO.impl;
 
 
 import com.ameysatwe.canvas.DAO.UserDao;
+import com.ameysatwe.canvas.models.Instructor;
 import com.ameysatwe.canvas.models.Role;
 import com.ameysatwe.canvas.models.Student;
 import com.ameysatwe.canvas.models.User;
@@ -42,6 +43,15 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    public Optional<Instructor> findInstructorByEmail(String email){
+        try (Session session = sessionFactory.openSession()) {
+            Instructor instructor = session.createQuery("FROM Instructor WHERE email = :email", Instructor.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
+            return Optional.ofNullable(instructor);
+        }
+    }
+
     @Override
     public List<User> findAllTAs() {
         try (Session session = sessionFactory.openSession()) {
@@ -57,13 +67,28 @@ public class UserDaoImpl implements UserDao {
             session.persist(user);
             transaction.commit();
         } catch (Exception e) {
-            System.out.println(e);
+//            System.out.println(e);
             if (transaction != null) {
                 transaction.rollback();
             }
             throw e;
         }
 
+    }
+    @Override
+    public void saveInstructor(Instructor instructor){
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.persist(instructor);
+            transaction.commit();
+        } catch (Exception e) {
+//            System.out.println(e);
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
     }
 
     @Override

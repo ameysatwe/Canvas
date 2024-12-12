@@ -37,7 +37,11 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .successHandler((request, response, authentication) -> {
                             if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
-                                response.sendRedirect("/admin/dashboard"); // Redirect to admin dashboard
+                                response.sendRedirect("/admin/dashboard");
+                            } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_STUDENT"))) {
+                                response.sendRedirect("/student/dashboard");
+                            } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"))) {
+                                response.sendRedirect("/instructor/dashboard");
                             } else {
                                 response.sendRedirect("/home");
                             }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Course</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Sidebar -->
+        <div class="col-md-3 bg-light p-3">
+            <h3>Instructor Menu</h3>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="/instructor/add-course" class="nav-link">Add Course</a></li>
+                <li class="nav-item"><a href="/instructor/view-courses" class="nav-link">View Courses</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="container mt-5">
+                <h1>Add Course</h1>
+                <form action="/instructor/add-course" method="post">
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Course Title</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Enter course title" required>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Course Description</label>
+                        <textarea class="form-control" id="description" name="description" placeholder="Enter course description" rows="4" required></textarea>
+                    </div>
+
+                    <!-- Teaching Assistant (TA) -->
+                    <div class="mb-3">
+                        <label for="ta" class="form-label">Teaching Assistant (Optional)</label>
+                        <select class="form-select" id="ta" name="taId">
+                            <option value="" selected>None</option>
+                            <option th:each="user : ${approvedTAs}" th:value="${user.id}" th:text="${user.name}"></option>
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Add Course</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

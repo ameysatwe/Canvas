@@ -1,7 +1,10 @@
 package com.ameysatwe.canvas.controllers;
 
+import com.ameysatwe.canvas.models.Instructor;
+import com.ameysatwe.canvas.models.Role;
 import com.ameysatwe.canvas.models.Student;
 import com.ameysatwe.canvas.models.User;
+import com.ameysatwe.canvas.services.UserFactory;
 import com.ameysatwe.canvas.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,19 +22,49 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserFactory userFactory;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new Student());
+        model.addAttribute("user", new User());
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") Student user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.registerUser(user);
+    public String registerUser(@ModelAttribute("user") User formUser) {
+        Role role = formUser.getRole();
+        User user = userFactory.createUser(role.toString());
+
+        user.setEmail(formUser.getEmail());
+        user.setPassword(passwordEncoder.encode(formUser.getPassword()));
+        user.setName(formUser.getName());
+        user.setRole(formUser.getRole());
+
+
+        if (user instanceof Student student) {
+            userService.registerUser(student);
+        } else if (user instanceof Instructor instructor) {
+            userService.registerInstructor(instructor);
+        }
+
         return "redirect:/users/all";
     }
+
+    @GetMapping("/register/instructor")
+    public String showRegistrationFormForInstructor(Model model) {
+        model.addAttribute("user", new Instructor());
+        return "register";
+    }
+
+    @PostMapping("/register/instructor")
+    public String registerUser(@ModelAttribute("user") Instructor user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.registerInstructor(user);
+        return "redirect:/users/all";
+    }
+
 
     @GetMapping("/all")
     public String listAllUsers(Model model) {
