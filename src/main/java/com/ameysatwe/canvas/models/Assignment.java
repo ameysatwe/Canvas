@@ -1,7 +1,10 @@
 package com.ameysatwe.canvas.models;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,15 +20,16 @@ public class Assignment {
     @Column(nullable = false)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "course_id", nullable = false)
+    @ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "course_id", nullable =true )
     private Course course;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime dueDate;
 
-    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL)
-    private List<Submission> submissions;
+    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Submission> submissions = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -72,9 +76,20 @@ public class Assignment {
     }
 
     public void setSubmissions(List<Submission> submissions) {
-        this.submissions = submissions;
+        if (submissions == null) {
+            this.submissions = new ArrayList<>();
+        } else {
+            this.submissions = submissions;
+        }
     }
 
-    // Getters and Setters
-    // Constructors
+    public void addSubmission(Submission submission) {
+        submissions.add(submission);
+        submission.setAssignment(this);
+    }
+
+    public void removeSubmission(Submission submission) {
+        submissions.remove(submission);
+        submission.setAssignment(null);
+    }
 }

@@ -1,6 +1,7 @@
 package com.ameysatwe.canvas.controllers;
 
 import com.ameysatwe.canvas.models.*;
+import com.ameysatwe.canvas.services.AssignmentService;
 import com.ameysatwe.canvas.services.CourseService;
 import com.ameysatwe.canvas.services.EnrollmentService;
 import com.ameysatwe.canvas.services.UserService;
@@ -22,10 +23,13 @@ public class InstructorController {
     private final UserService userService;
 
     private final EnrollmentService enrollmentService;
-    public InstructorController(CourseService courseService, UserService userService,EnrollmentService enrollmentService){
+
+    private final AssignmentService assignmentService;
+    public InstructorController(CourseService courseService, UserService userService,EnrollmentService enrollmentService,AssignmentService assignmentService){
         this.courseService = courseService;
         this.userService = userService;
         this.enrollmentService = enrollmentService;
+        this.assignmentService = assignmentService;
     }
 
 
@@ -60,11 +64,28 @@ public class InstructorController {
 
     @GetMapping("/course/{id}/assignments")
     public String viewAssignments(@PathVariable Long id, Model model) {
-        List<Assignment> assignments = new ArrayList<>();//assignmentService.getAssignmentsByCourseId(id);
+        List<Assignment> assignments = assignmentService.getAssignmentsByCourseId(courseService.getCourseById(id));
+        Course course = courseService.getCourseById(id);
+        model.addAttribute("course", course);
         model.addAttribute("assignments", assignments);
         return "instructor/assignments";
     }
 
+    @GetMapping("/course/{id}/add-assignment")
+    public String showAddAssignmentForm(@PathVariable Long id, Model model) {
+        Course course = courseService.getCourseById(id);
+        Assignment assignment = new Assignment();
+        assignment.setCourse(course);
+        model.addAttribute("course", course);
+        model.addAttribute("assignment", assignment);
+        return "instructor/add-assignment";
+    }
+
+    @PostMapping("/course/{id}/add-assignment")
+    public String addAssignment(@PathVariable Long id, @ModelAttribute("assignment") Assignment assignment) {
+        assignmentService.saveAssignment(assignment,id);
+        return "redirect:/instructor/course/" + id + "/assignments";
+    }
 
     @GetMapping("/add-course")
     public String showAddCourseForm(Model model){

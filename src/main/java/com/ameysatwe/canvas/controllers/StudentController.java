@@ -4,6 +4,7 @@ import com.ameysatwe.canvas.models.Assignment;
 import com.ameysatwe.canvas.models.Course;
 import com.ameysatwe.canvas.models.Enrollment;
 import com.ameysatwe.canvas.models.User;
+import com.ameysatwe.canvas.services.AssignmentService;
 import com.ameysatwe.canvas.services.CourseService;
 import com.ameysatwe.canvas.services.EnrollmentService;
 import com.ameysatwe.canvas.services.UserService;
@@ -25,10 +26,13 @@ public class StudentController {
     private final CourseService courseService;
     private final EnrollmentService enrollmentService;
 
-    public StudentController(UserService userService, CourseService courseService, EnrollmentService enrollmentService) {
+    private final AssignmentService assignmentService;
+
+    public StudentController(UserService userService, CourseService courseService, EnrollmentService enrollmentService,AssignmentService assignmentService) {
         this.userService = userService;
         this.courseService = courseService;
         this.enrollmentService = enrollmentService;
+        this.assignmentService = assignmentService;
     }
 
     @GetMapping("/student/dashboard")
@@ -72,7 +76,7 @@ public class StudentController {
     @GetMapping("/student/course/{id}/assignments")
     public String viewAssignments(@PathVariable Long id, Model model) {
         Course course = courseService.getCourseById(id);
-        List<Assignment> assignments = new ArrayList<>();//assignmentService.getAssignmentsByCourseId(id);
+        List<Assignment> assignments = assignmentService.getAssignmentsByCourseId(course);
         model.addAttribute("course", course);
         model.addAttribute("assignments", assignments);
         return "student/assignments";

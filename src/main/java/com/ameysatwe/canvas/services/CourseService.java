@@ -1,6 +1,7 @@
 package com.ameysatwe.canvas.services;
 
 import com.ameysatwe.canvas.DAO.CourseDAO;
+import com.ameysatwe.canvas.models.Assignment;
 import com.ameysatwe.canvas.models.Course;
 import com.ameysatwe.canvas.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class CourseService {
     }
 
     public void updateCourse(Course course){
+        courseDAO.update(course);
+    }
+
+    public void addAssignment(Course course, Assignment assignment){
+        course.addAssignment(assignment);
         courseDAO.update(course);
     }
 }

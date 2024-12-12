@@ -11,9 +11,9 @@
         <div class="col-md-4 mb-4" th:each="assignment : ${assignments}">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${assignment.title}"></h5>
-                    <p class="card-text" th:text="${assignment.description}"></p>
-                    <p th:text="'Due: ' + ${#dates.format(assignment.dueDate, 'yyyy-MM-dd')}"></p>
+                    <h5 class="card-title" th:text="${assignment.getTitle()}"></h5>
+                    <p class="card-text" th:text="${assignment.getDescription()}"></p>
+                    <p th:text="'Due: ' + ${assignment.getDueDate()}"></p>
                 </div>
             </div>
         </div>

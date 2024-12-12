@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Assignments</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1 class="mt-5">Assignments for Course: <span th:text="${course.getTitle()}"></span></h1>
+  <table class="table table-striped mt-3">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Due Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="assignment : ${assignments}">
+      <td th:text="${assignment.getTitle()}"></td>
+      <td th:text="${assignment.getDescription()}"></td>
+      <td th:text="${assignment.getDueDate()}"></td>
+    </tr>
+    </tbody>
+  </table>
+  <a th:href="@{/instructor/course/{courseId}/add-assignment(courseId=${course.getId()})}" class="btn btn-primary mt-3">Add Assignment</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

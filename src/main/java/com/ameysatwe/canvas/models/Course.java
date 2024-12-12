@@ -1,6 +1,8 @@
 package com.ameysatwe.canvas.models;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,7 @@ import java.util.Optional;
         )
 })
 public class Course {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,15 +38,18 @@ public class Course {
     @JoinColumn(name = "instructor_id", nullable = false)
     private User instructor;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<Enrollment> enrollments;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Enrollment> enrollments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<Assignment> assignments;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Assignment> assignments = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "ta_id")
     private User ta;
+
+    @Column(nullable = false)
+    private Boolean isPublished = false;
 
     public Boolean getPublished() {
         return isPublished;
@@ -52,9 +58,6 @@ public class Course {
     public void setPublished(Boolean published) {
         isPublished = published;
     }
-
-    @Column(nullable = false)
-    private Boolean isPublished = false;
 
     public Long getId() {
         return id;
@@ -112,6 +115,13 @@ public class Course {
         this.ta = ta;
     }
 
+    public void addAssignment(Assignment assignment) {
+        assignments.add(assignment);
+        assignment.setCourse(this);
+    }
 
-
+    public void removeAssignment(Assignment assignment) {
+        assignments.remove(assignment);
+        assignment.setCourse(null);
+    }
 }

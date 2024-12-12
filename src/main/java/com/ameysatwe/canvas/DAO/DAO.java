@@ -1,5 +1,5 @@
 package com.ameysatwe.canvas.DAO;
 
-public abstract class DAO {
+public class DAO {
 
 }

@@ -52,10 +52,12 @@ public class CourseDaoImpl implements CourseDAO {
             throw e;
         }
 
+
     }
 
     @Override
     public Course findById(Long id) {
+        System.out.println(sessionFactory.hashCode());
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM Course WHERE id = :id", Course.class)
                     .setParameter("id",id)
