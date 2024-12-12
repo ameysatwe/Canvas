@@ -32,29 +32,10 @@ public class AssignmentService {
     }
 
 
-    public void saveAssignment(Assignment assignment, Long courseId) {
+    public void saveAssignment(Assignment assignment) {
         // Explicitly fetch the course within the transactional context
-        Transaction transaction = null;
-        Session session = sessionFactory.openSession();
-        try (session) {
-            transaction = session.beginTransaction();
-            Course course = session.find(Course.class, assignment.getCourse().getId());
-            Assignment newAssignment = new Assignment();
-            newAssignment.setTitle(assignment.getTitle());
-            newAssignment.setDescription(assignment.getDescription());
-            newAssignment.setCourse(course);
-            newAssignment.setDueDate(assignment.getDueDate());
 
-            session.persist(newAssignment);
-            transaction.commit();
-        } catch (Exception e) {
-//            System.out.println(e);
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw e;
-        }
-
+    assignmentDAO.save(assignment);
 
     }
 

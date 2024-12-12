@@ -83,7 +83,7 @@ public class InstructorController {
 
     @PostMapping("/course/{id}/add-assignment")
     public String addAssignment(@PathVariable Long id, @ModelAttribute("assignment") Assignment assignment) {
-        assignmentService.saveAssignment(assignment,id);
+        assignmentService.saveAssignment(assignment);
         return "redirect:/instructor/course/" + id + "/assignments";
     }
 

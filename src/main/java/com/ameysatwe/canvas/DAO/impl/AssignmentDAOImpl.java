@@ -25,20 +25,24 @@ public class AssignmentDAOImpl implements AssignmentDAO {
     @Override
     public void save(Assignment assignment) {
         Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
+        Session session = sessionFactory.openSession();
+        try (session) {
             transaction = session.beginTransaction();
-//            Course course = assignment.getCourse();
-//            session.merge(course);
-            session.persist(assignment);
+            Course course = session.find(Course.class, assignment.getCourse().getId());
+            Assignment newAssignment = new Assignment();
+            newAssignment.setTitle(assignment.getTitle());
+            newAssignment.setDescription(assignment.getDescription());
+            newAssignment.setCourse(course);
+            newAssignment.setDueDate(assignment.getDueDate());
+            session.persist(newAssignment);
             transaction.commit();
         } catch (Exception e) {
-            System.out.println(e);
+//            System.out.println(e);
             if (transaction != null) {
                 transaction.rollback();
             }
             throw e;
         }
-
 
     }
 
