@@ -2,9 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Instructor dashboards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
 </head>
 <body>
-    Instructor dashboard
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Sidebar -->
+        <div class="col-md-3 bg-light p-3">
+            <h3>Instructor Menu</h3>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="/instructor/add-course" class="nav-link">Add Course</a></li>
+                <li class="nav-item"><a href="/instructor/list-courses" class="nav-link active">View Courses</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 p-5">
+            <h1 class="mb-4">Instructor Dashboard</h1>
+            <h3 class="mb-3">Your Courses</h3>
+            <div class="row">
+                <div class="col-md-4 mb-4" th:each="course : ${courses}">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${course.title}"></h5>
+                            <p class="card-text" th:text="${course.description}"></p>
+                            <a th:href="@{/instructor/course/{id}(id=${course.id})}" class="btn btn-primary">Manage Course</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

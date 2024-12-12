@@ -5,23 +5,35 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container mt-5">
-  <h1 class="mb-4">Student Dashboard</h1>
-  <div class="card shadow-sm p-3">
-    <div th:if="${#lists.isEmpty(enrollments)}" class="alert alert-warning">
-      <p>No courses registered. <a href="/student/register" class="alert-link">Register for courses</a></p>
-    </div>
-    <div th:if="${!#lists.isEmpty(enrollments)}">
-      <h2>Your Registered Courses</h2>
-      <ul class="list-group">
-        <li th:each="enrollment : ${enrollments}" class="list-group-item">
-          <strong th:text="${enrollment.course.name}"></strong>
-          <span class="badge bg-success ms-2" th:text="${enrollment.status}"></span>
-        </li>
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+    <!-- Sidebar -->
+    <div class="col-md-3 bg-light p-3">
+      <h3>Student Menu</h3>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a href="/student/dashboard" class="nav-link">Dashboard</a></li>
+        <li class="nav-item"><a href="/student/register" class="nav-link">Register for Courses</a></li>
       </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 p-5">
+      <h1 class="mb-4">My Courses</h1>
+      <div class="row">
+        <div class="col-md-4 mb-4" th:each="enrollment : ${enrollments}">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" th:text="${enrollment.course.title}"></h5>
+              <p class="card-text" th:text="${enrollment.course.description}"></p>
+              <a th:href="@{/student/course/{id}(id=${enrollment.course.id})}" class="btn btn-primary">View Course</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

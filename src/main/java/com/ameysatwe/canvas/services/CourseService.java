@@ -2,6 +2,7 @@ package com.ameysatwe.canvas.services;
 
 import com.ameysatwe.canvas.DAO.CourseDAO;
 import com.ameysatwe.canvas.models.Course;
+import com.ameysatwe.canvas.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +21,22 @@ public class CourseService {
     }
 
     public List<Course> getAllCourses() {
-//        return courseDAO.findAllCourses();
-//    return courseDAO.findByInstructor()
-        return new ArrayList<>();
+        return courseDAO.getAllCourses();
     }
 
-    public List<Course> getAllCoursesByInstructor(Long ins_id){
-        return courseDAO.findByInstructor(ins_id);
+    public List<Course> getAllCoursesByInstructor(User user){
+        return courseDAO.findByInstructor(user);
     }
 
     public void addNewCourse(Course course){
         courseDAO.save(course);
     }
 
+    public Course getCourseById(Long id){
+        return courseDAO.findById(id);
+    }
+
+    public void updateCourse(Course course){
+        courseDAO.update(course);
+    }
 }

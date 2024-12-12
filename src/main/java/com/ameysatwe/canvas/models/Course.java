@@ -45,6 +45,17 @@ public class Course {
     @JoinColumn(name = "ta_id")
     private User ta;
 
+    public Boolean getPublished() {
+        return isPublished;
+    }
+
+    public void setPublished(Boolean published) {
+        isPublished = published;
+    }
+
+    @Column(nullable = false)
+    private Boolean isPublished = false;
+
     public Long getId() {
         return id;
     }

@@ -2,30 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Sidebar -->
+        <div class="col-md-3 bg-light p-3">
+            <h3>Instructor Menu</h3>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="/instructor/add-course" class="nav-link">Add Course</a></li>
+                <li class="nav-item"><a href="/instructor/view-courses" class="nav-link">View Courses</a></li>
+            </ul>
+        </div>
 
-<div class="col-md-9 p-5">
-    <h1>Instructor Dashboard</h1>
-    <h3>All Courses</h3>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Description</th>
-            <th>Title</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="course : ${courses}">
-            <td th:text="${course.getId()}"></td>
-            <td th:text="${course.getTitle()}"></td>
-            <td th:text="${course.getDescription()}"></td>
-        </tr>
-        </tbody>
-    </table>
+        <!-- Main Content -->
+        <div class="col-md-9 p-5">
+            <h1 class="mb-4">Instructor Dashboard</h1>
+            <h3 class="mb-3">All Courses</h3>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="course : ${courses}" id="course-row-${course.getId()}">
+                    <td th:text="${course.getId()}"></td>
+                    <td th:text="${course.getTitle()}"></td>
+                    <td th:text="${course.getDescription()}"></td>
+                    <td th:text="${course.getPublished()} ? 'Published' : 'Unpublished'"></td>
+                    <td>
+                        <button class="btn btn-sm toggle-publish-btn"
+                                th:data-course-id="${course.getId()}"
+                                th:classappend="${course.getPublished()} ? 'btn-danger' : 'btn-success'"
+                                th:text="${course.getPublished()} ? 'Unpublish' : 'Publish'"></button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.querySelectorAll('.toggle-publish-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const courseId = this.getAttribute('data-course-id');
+            const row = document.querySelector(`#course-row-${courseId}`);
+
+            axios.post('/instructor/toggle-publish', { courseId })
+                .then(response => {
+                    const isPublished = response.data.published;
+                    // Update button text and class
+                    this.textContent = isPublished ? 'Unpublish' : 'Publish';
+                    this.classList.toggle('btn-success', !isPublished);
+                    this.classList.toggle('btn-danger', isPublished);
+
+                    // Update status column
+                    row.querySelector('td:nth-child(4)').textContent = isPublished ? 'Published' : 'Unpublished';
+                })
+                .catch(error => {
+                    console.error('Error toggling publish status:', error);
+                });
+        });
+    });
+</script>
 </body>
 </html>

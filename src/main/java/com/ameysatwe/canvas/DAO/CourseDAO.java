@@ -2,16 +2,21 @@ package com.ameysatwe.canvas.DAO;
 
 
 import com.ameysatwe.canvas.models.Course;
+import com.ameysatwe.canvas.models.User;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CourseDAO {
-    List<Course> findByInstructor(Long instructorId);
+    List<Course> findByInstructor(User user);
     List<Course> findByTA(Long taId);
     Optional<Course> findByTitle(String title);
     void save(Course course);
-    Optional<Course> findById(Long id);
+    Course findById(Long id);
     void deleteById(Long id);
+
+    void update(Course course);
+
+    List<Course> getAllCourses();
 
 }

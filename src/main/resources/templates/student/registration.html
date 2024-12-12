@@ -18,8 +18,8 @@
       </thead>
       <tbody>
       <tr th:each="course : ${courses}">
-        <td th:text="${course.name}"></td>
-        <td th:text="${course.description}"></td>
+        <td th:text="${course.getTitle()}"></td>
+        <td th:text="${course.getTitle()}"></td>
         <td><input type="checkbox" name="courseIds" th:value="${course.id}" class="form-check-input"></td>
       </tr>
       </tbody>

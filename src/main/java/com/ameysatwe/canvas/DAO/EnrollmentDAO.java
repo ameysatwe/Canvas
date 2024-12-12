@@ -10,4 +10,6 @@ public interface EnrollmentDAO {
     Long countByCourse(Long courseId);
     void save(Enrollment enrollment);
     void delete(Long id);
+
+    boolean existsByUserIdAndCourseId(Long userId,Long courseId);
 }
