@@ -33,16 +33,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="course : ${courses}" id="course-row-${course.getId()}">
-                    <td th:text="${course.getId()}"></td>
-                    <td th:text="${course.getTitle()}"></td>
-                    <td th:text="${course.getDescription()}"></td>
-                    <td th:text="${course.getPublished()} ? 'Published' : 'Unpublished'"></td>
+                <tr th:each="course : ${courses}">
+                    <td th:text="${course.id}"></td>
+                    <td th:text="${course.title}"></td>
+                    <td th:text="${course.description}"></td>
+                    <td th:text="${course.published} ? 'Published' : 'Unpublished'"></td>
                     <td>
                         <button class="btn btn-sm toggle-publish-btn"
-                                th:data-course-id="${course.getId()}"
-                                th:classappend="${course.getPublished()} ? 'btn-danger' : 'btn-success'"
-                                th:text="${course.getPublished()} ? 'Unpublish' : 'Publish'"></button>
+                                th:data-course-id="${course.id}"
+                                th:data-course-published="${course.published}"
+                                th:classappend="${course.published} ? 'btn-danger' : 'btn-success'"
+                                th:text="${course.published} ? 'Unpublish' : 'Publish'">
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -56,19 +58,23 @@
 <script>
     document.querySelectorAll('.toggle-publish-btn').forEach(button => {
         button.addEventListener('click', function () {
-            const courseId = this.getAttribute('data-course-id');
-            const row = document.querySelector(`#course-row-${courseId}`);
+            // Retrieve course ID and current published state from data attributes
+            const courseId = this.dataset.courseId;
+            const isPublished = this.dataset.coursePublished === "true";
 
             axios.post('/instructor/toggle-publish', { courseId })
                 .then(response => {
-                    const isPublished = response.data.published;
-                    // Update button text and class
-                    this.textContent = isPublished ? 'Unpublish' : 'Publish';
-                    this.classList.toggle('btn-success', !isPublished);
-                    this.classList.toggle('btn-danger', isPublished);
+                    const updatedPublished = response.data.published;
 
-                    // Update status column
-                    row.querySelector('td:nth-child(4)').textContent = isPublished ? 'Published' : 'Unpublished';
+                    // Update button text, class, and data attributes
+                    this.textContent = updatedPublished ? 'Unpublish' : 'Publish';
+                    this.classList.toggle('btn-success', !updatedPublished);
+                    this.classList.toggle('btn-danger', updatedPublished);
+                    this.dataset.coursePublished = updatedPublished;
+
+                    // Update status column in the same row
+                    const statusCell = this.closest('tr').querySelector('td:nth-child(4)');
+                    statusCell.textContent = updatedPublished ? 'Published' : 'Unpublished';
                 })
                 .catch(error => {
                     console.error('Error toggling publish status:', error);

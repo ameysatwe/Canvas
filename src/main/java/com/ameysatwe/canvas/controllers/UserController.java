@@ -48,7 +48,7 @@ public class UserController {
             userService.registerTA(ta);
         }
 
-        return "redirect:/users/all";
+        return "redirect:/login";
     }
 
     @GetMapping("/register/instructor")

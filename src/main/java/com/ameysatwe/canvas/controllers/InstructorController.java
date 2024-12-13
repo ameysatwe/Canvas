@@ -132,7 +132,8 @@ public class InstructorController {
     }
     @PostMapping("/toggle-publish")
     @ResponseBody
-    public Map<String, Object> togglePublish(@RequestParam("courseId") Long courseId) {
+    public Map<String, Object> togglePublish(@RequestBody Map<String, Long> payload) {
+        Long courseId = payload.get("courseId");
         Course course = courseService.getCourseById(courseId);
         Map<String, Object> response = new HashMap<>();
 
@@ -144,7 +145,6 @@ public class InstructorController {
         } else {
             response.put("success", false);
         }
-
         return response;
     }
 
