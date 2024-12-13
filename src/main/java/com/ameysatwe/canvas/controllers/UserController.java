@@ -1,9 +1,6 @@
 package com.ameysatwe.canvas.controllers;
 
-import com.ameysatwe.canvas.models.Instructor;
-import com.ameysatwe.canvas.models.Role;
-import com.ameysatwe.canvas.models.Student;
-import com.ameysatwe.canvas.models.User;
+import com.ameysatwe.canvas.models.*;
 import com.ameysatwe.canvas.services.UserFactory;
 import com.ameysatwe.canvas.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +44,8 @@ public class UserController {
             userService.registerUser(student);
         } else if (user instanceof Instructor instructor) {
             userService.registerInstructor(instructor);
+        }else  if (user instanceof TA ta){
+            userService.registerTA(ta);
         }
 
         return "redirect:/users/all";

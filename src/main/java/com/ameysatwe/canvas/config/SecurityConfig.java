@@ -42,8 +42,10 @@ public class SecurityConfig {
                                 response.sendRedirect("/student/dashboard");
                             } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"))) {
                                 response.sendRedirect("/instructor/dashboard");
+                            }else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TA"))) {
+                                    response.sendRedirect("/ta/dashboard");
                             } else {
-                                response.sendRedirect("/home");
+                                response.sendRedirect("/logout");
                             }
                         })
                         .permitAll()

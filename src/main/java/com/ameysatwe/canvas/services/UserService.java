@@ -1,9 +1,7 @@
 package com.ameysatwe.canvas.services;
 
 import com.ameysatwe.canvas.DAO.UserDao;
-import com.ameysatwe.canvas.models.Instructor;
-import com.ameysatwe.canvas.models.Student;
-import com.ameysatwe.canvas.models.User;
+import com.ameysatwe.canvas.models.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,14 @@ public class UserService {
         userDao.saveInstructor(instructor);
     }
 
+    public void registerTA(TA ta){
+        userDao.saveTA(ta);
+    }
+
+    public Optional<User> getUserById(Long id) {
+        return userDao.findById(id);
+    }
+
     public List<User> getAllUsers() {
         return userDao.findAllUsers();
     }
@@ -46,7 +52,7 @@ public class UserService {
 
 
     public Object getApprovedTAs() {
-        return new ArrayList<>();
+        return userDao.findByRole(Role.TA);
     }
 
     public Optional<Instructor> getInstructorByEmail(String email){

@@ -42,5 +42,8 @@ public class AssignmentService {
     public List<Assignment> getAssignmentsByCourseId(Course course) {
         return assignmentDAO.getAssignmentsByCourseId(course);
     }
-    // Other methods for assignment operations
+
+    public Assignment findById(Long id) {
+        return assignmentDAO.getAssignmentById(id);
+    }
 }

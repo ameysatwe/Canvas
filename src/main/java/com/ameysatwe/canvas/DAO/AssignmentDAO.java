@@ -9,4 +9,6 @@ public interface AssignmentDAO {
     void save(Assignment assignment);
 
     List<Assignment> getAssignmentsByCourseId(Course course);
+
+    Assignment getAssignmentById(Long id);
 }

@@ -57,6 +57,7 @@ public class InstructorController {
     @GetMapping("/course/{id}/enrollments")
     public String viewEnrollments(@PathVariable Long id, Model model) {
         List<Enrollment> enrollments = enrollmentService.getEnrollmentsByCourseId(id);
+        model.addAttribute("course", courseService.getCourseById(id));
         model.addAttribute("enrollments", enrollments);
         return "instructor/enrollments";
 
@@ -95,7 +96,7 @@ public class InstructorController {
     }
 
     @PostMapping("/add-course")
-    public String addCourse(@ModelAttribute("course") Course course, Authentication authentication){
+    public String addCourse(@ModelAttribute("course") Course course,@RequestParam(value = "taId", required = false) Long taId, Authentication authentication){
         String username = authentication.getName();
 
         Optional<User> user = userService.getUserByEmail(username);
@@ -104,7 +105,12 @@ public class InstructorController {
         }
 
         System.out.println(username);
-        course.setTa(null);
+        if (taId != null) {
+            Optional<User> ta = userService.getUserById(taId); // Assuming a method getUserById in UserService
+            ta.ifPresent(course::setTa);
+
+        }
+
         course.setInstructor(user.get());
 
         courseService.addNewCourse(course);

@@ -2,10 +2,7 @@ package com.ameysatwe.canvas.DAO.impl;
 
 
 import com.ameysatwe.canvas.DAO.UserDao;
-import com.ameysatwe.canvas.models.Instructor;
-import com.ameysatwe.canvas.models.Role;
-import com.ameysatwe.canvas.models.Student;
-import com.ameysatwe.canvas.models.User;
+import com.ameysatwe.canvas.models.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.transaction.Transactional;
@@ -75,6 +72,7 @@ public class UserDaoImpl implements UserDao {
         }
 
     }
+
     @Override
     public void saveInstructor(Instructor instructor){
         Transaction transaction = null;
@@ -90,6 +88,24 @@ public class UserDaoImpl implements UserDao {
             throw e;
         }
     }
+
+
+    @Override
+    public void saveTA(TA ta){
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.persist(ta);
+            transaction.commit();
+        } catch (Exception e) {
+//            System.out.println(e);
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
 
     @Override
     public Optional<User> findById(Long id) {

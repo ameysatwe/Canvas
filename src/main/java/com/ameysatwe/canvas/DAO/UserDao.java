@@ -1,9 +1,6 @@
 package com.ameysatwe.canvas.DAO;
 
-import com.ameysatwe.canvas.models.Instructor;
-import com.ameysatwe.canvas.models.Role;
-import com.ameysatwe.canvas.models.Student;
-import com.ameysatwe.canvas.models.User;
+import com.ameysatwe.canvas.models.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +21,5 @@ public interface UserDao {
 
     Optional<Instructor> findInstructorByEmail(String email);
 
+    public void saveTA(TA user);
 }

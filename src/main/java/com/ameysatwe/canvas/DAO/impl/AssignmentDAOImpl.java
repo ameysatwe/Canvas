@@ -54,4 +54,11 @@ public class AssignmentDAOImpl implements AssignmentDAO {
                     .getResultList();
         }
     }
+
+    @Override
+    public Assignment getAssignmentById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.find(Assignment.class, id);
+        }
+    }
 }
