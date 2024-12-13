@@ -8,6 +8,8 @@ import com.ameysatwe.canvas.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SubmissionService {
 
@@ -18,12 +20,10 @@ public class SubmissionService {
         this.submissionDao = submissionDao;
     }
 
-    // Check if a student has already submitted the assignment
     public boolean existsByAssignmentAndStudent(Assignment assignment, User student) {
         return submissionDao.existsByAssignmentAndStudent(assignment, student);
     }
 
-    // Check if a student has already submitted an assignment by ID
     public boolean existsByAssignmentAndStudentId(Long assignmentId, Long studentId) {
         return submissionDao.existsByAssignmentAndStudentId(assignmentId, studentId);
     }
@@ -31,5 +31,9 @@ public class SubmissionService {
     // Save a new submission
     public void save(Submission submission) {
         submissionDao.save(submission);
+    }
+
+    public List<Submission> findByAssignmentId(Long assignmentId) {
+        return submissionDao.findByAssignmentId(assignmentId);
     }
 }

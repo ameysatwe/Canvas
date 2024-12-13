@@ -15,6 +15,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class SubmissionDAOImpl implements SubmissionDAO {
 
@@ -72,5 +74,24 @@ public class SubmissionDAOImpl implements SubmissionDAO {
         session.persist(submission);
         session.getTransaction().commit();
         session.close();
+    }
+
+    @Override
+    public List<Submission> findByAssignmentId(Long assignmentId) {
+        Session session = sessionFactory.openSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Submission> cq = cb.createQuery(Submission.class);
+        Root<Submission> root = cq.from(Submission.class);
+
+        // Add conditions to the query
+        Predicate assignmentPredicate = cb.equal(root.get("assignment").get("id"), assignmentId);
+
+        cq.select(root).where(assignmentPredicate);
+
+        Query<Submission> query = session.createQuery(cq);
+        List<Submission> submissions = query.getResultList();
+        session.close();
+
+        return submissions;
     }
 }

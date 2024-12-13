@@ -33,10 +33,7 @@ public class AssignmentService {
 
 
     public void saveAssignment(Assignment assignment) {
-        // Explicitly fetch the course within the transactional context
-
     assignmentDAO.save(assignment);
-
     }
 
     public List<Assignment> getAssignmentsByCourseId(Course course) {

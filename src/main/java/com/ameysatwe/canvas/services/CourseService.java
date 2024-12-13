@@ -45,4 +45,8 @@ public class CourseService {
         course.addAssignment(assignment);
         courseDAO.update(course);
     }
+
+    public List<Course> getCoursesForTA(User TA) {
+        return courseDAO.findByTA(TA);
+    }
 }

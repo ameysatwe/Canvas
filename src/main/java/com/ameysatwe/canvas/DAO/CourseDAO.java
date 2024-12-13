@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CourseDAO {
     List<Course> findByInstructor(User user);
-    List<Course> findByTA(Long taId);
+    List<Course> findByTA(User TA);
     Optional<Course> findByTitle(String title);
     void save(Course course);
     Course findById(Long id);

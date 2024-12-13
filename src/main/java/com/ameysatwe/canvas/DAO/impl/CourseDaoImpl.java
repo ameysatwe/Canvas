@@ -28,8 +28,12 @@ public class CourseDaoImpl implements CourseDAO {
     }
 
     @Override
-    public List<Course> findByTA(Long taId) {
-        return null;
+    public List<Course> findByTA(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course WHERE ta = :ta", Course.class)
+                    .setParameter("ta", user)
+                    .getResultList();
+        }
     }
 
     @Override
