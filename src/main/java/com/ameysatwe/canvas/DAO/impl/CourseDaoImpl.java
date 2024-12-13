@@ -97,4 +97,21 @@ public class CourseDaoImpl implements CourseDAO {
                     .getResultList();
         }
     }
+    @Override
+    public List<Course> getAvailableCoursesForUser(User user) {
+        String hql = """
+        SELECT c
+        FROM Course c
+        WHERE c.isPublished = true
+          AND c.id NOT IN (
+            SELECT e.course.id
+            FROM Enrollment e
+            WHERE e.user.id = :userId
+          )
+    """;
+        return sessionFactory.openSession().createQuery(hql, Course.class)
+                .setParameter("userId", user.getId())
+                .getResultList();
+    }
+
 }

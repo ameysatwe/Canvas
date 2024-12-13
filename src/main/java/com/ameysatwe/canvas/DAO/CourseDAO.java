@@ -19,4 +19,7 @@ public interface CourseDAO {
 
     List<Course> getAllCourses();
 
+
+    List<Course> getAvailableCoursesForUser(User user);
+
 }

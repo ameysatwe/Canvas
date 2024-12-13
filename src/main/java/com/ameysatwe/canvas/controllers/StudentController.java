@@ -54,8 +54,9 @@ public class StudentController {
     }
 
     @GetMapping("/register")
-    public String getCourseRegistrationPage(Model model) {
-        List<Course> allCourses = courseService.getAllCourses();
+    public String getCourseRegistrationPage(Model model,Authentication authentication) {
+        User user = userService.getUserByEmail(authentication.getName()).get();
+        List<Course> allCourses = courseService.getAvailableCoursesForUser(user);
         model.addAttribute("courses", allCourses);
         return "student/registration";
     }

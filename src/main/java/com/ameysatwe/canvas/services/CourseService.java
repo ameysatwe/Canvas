@@ -49,4 +49,8 @@ public class CourseService {
     public List<Course> getCoursesForTA(User TA) {
         return courseDAO.findByTA(TA);
     }
+
+    public List<Course> getAvailableCoursesForUser(User user) {
+        return courseDAO.getAvailableCoursesForUser(user);
+    }
 }
