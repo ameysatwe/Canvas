@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Courses</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>All Courses</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Instructor</th>
+            <th>TA</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course, iterStat : ${courses}">
+            <td th:text="${iterStat.count}"></td>
+            <td th:text="${course.getTitle()}"></td>
+            <td th:text="${course.getDescription()}"></td>
+            <td th:text="${course.
+            getInstructor().getName()}"></td>
+            <td th:text="${course.getTa().getName()}"></td>
+            <td>
+                <a th:href="@{/admin/course/{id}/stats(id=${course.id})}" class="btn btn-info">View Stats</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/admin/dashboard" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

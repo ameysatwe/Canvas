@@ -36,7 +36,7 @@
       <tr th:each="submission : ${submissions}">
         <td th:text="${submission.student.getName()}"></td>
         <td>
-          <a th:href="${submission.getFileUrl()}" target="_blank">View File</a>
+          <a th:href="${'/'+submission.getFileUrl()}" target="_blank">View File</a>
         </td>
         <td th:text="${submission.getSubmittedAt()}"></td>
         <td th:text="${submission.getGrade()}">N/A</td>

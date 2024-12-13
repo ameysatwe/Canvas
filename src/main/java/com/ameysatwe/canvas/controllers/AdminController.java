@@ -1,15 +1,14 @@
 package com.ameysatwe.canvas.controllers;
 
 
-import com.ameysatwe.canvas.models.Course;
-import com.ameysatwe.canvas.models.User;
-import com.ameysatwe.canvas.services.CourseService;
-import com.ameysatwe.canvas.services.UserService;
+import com.ameysatwe.canvas.models.*;
+import com.ameysatwe.canvas.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @Controller
@@ -18,6 +17,18 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private EnrollmentService enrollmentService;
+
+    @Autowired
+    private AssignmentService assignmentService;
+
+    @Autowired
+    private SubmissionService submissionService;
 
 
     @GetMapping("/dashboard")
@@ -38,5 +49,28 @@ public class AdminController {
         userService.deleteUser(userId);
         return "redirect:/admin/dashboard";
     }
+
+    @GetMapping("/courses")
+    public String listAllCourses(Model model) {
+        List<Course> courses = courseService.getAllCourses();
+        model.addAttribute("courses", courses);
+        return "admin/courses";
+    }
+
+    @GetMapping("/course/{id}/stats")
+    public String getCourseStats(@PathVariable Long id, Model model) {
+        Course course = courseService.getCourseById(id);
+        List<Enrollment> enrollments = enrollmentService.getEnrollmentsByCourseId(course.getId());
+        List<Assignment> assignments = assignmentService.getAssignmentsByCourseId(course);
+        List<Submission> submissions = submissionService.getSubmissionsByCourse(course);
+
+        model.addAttribute("course", course);
+        model.addAttribute("enrollments", enrollments);
+        model.addAttribute("assignments", assignments);
+        model.addAttribute("submissions", submissions);
+
+        return "admin/course-stats";
+    }
+
 
 }

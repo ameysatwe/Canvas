@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Course Stats</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Course Stats</h1>
+  <h2 th:text="'Course: ' + ${course.title}"></h2>
+  <p th:text="${course.description}"></p>
+
+  <!-- Enrollments -->
+  <h3>Enrollments</h3>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Student Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="enrollment, iterStat : ${enrollments}">
+      <td th:text="${iterStat.count}"></td>
+      <td th:text="${enrollment.getUser().getName()}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Assignments -->
+  <h3>Assignments</h3>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Due Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="assignment, iterStat : ${assignments}">
+      <td th:text="${iterStat.count}"></td>
+      <td th:text="${assignment.title}"></td>
+      <td th:text="${assignment.description}"></td>
+      <td th:text="${assignment.dueDate}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Submissions -->
+  <h3>Submissions</h3>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Assignment</th>
+      <th>Student</th>
+      <th>Submitted At</th>
+      <th>Grade</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="submission, iterStat : ${submissions}">
+      <td th:text="${iterStat.count}"></td>
+      <td th:text="${submission.assignment.title}"></td>
+      <td th:text="${submission.getStudent().getName()}"></td>
+      <td th:text="${submission.submittedAt}"></td>
+      <td th:text="${submission.grade ?: 'Not Graded'}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <a href="/admin/courses" class="btn btn-secondary mt-3">Back to All Courses</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

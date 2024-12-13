@@ -127,4 +127,18 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/course/{id}/submissions")
+    public String viewSubmissionsForCourse(@PathVariable Long id, Model model, Authentication authentication) {
+        Course course = courseService.getCourseById(id);
+        String email = authentication.getName();
+        User student = userService.getUserByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Student not found"));
+
+        List<Submission> submissions = submissionService.getSubmissionsByStudentAndCourse(student, id);
+        model.addAttribute("course", course);
+        model.addAttribute("submissions", submissions);
+        return "student/course-submissions"; // New template for course-specific submissions
+    }
+
+
 }

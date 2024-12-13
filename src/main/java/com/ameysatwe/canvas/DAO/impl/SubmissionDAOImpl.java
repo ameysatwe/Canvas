@@ -2,6 +2,7 @@ package com.ameysatwe.canvas.DAO.impl;
 
 import com.ameysatwe.canvas.DAO.SubmissionDAO;
 import com.ameysatwe.canvas.models.Assignment;
+import com.ameysatwe.canvas.models.Course;
 import com.ameysatwe.canvas.models.Submission;
 import com.ameysatwe.canvas.models.User;
 
@@ -82,16 +83,58 @@ public class SubmissionDAOImpl implements SubmissionDAO {
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<Submission> cq = cb.createQuery(Submission.class);
         Root<Submission> root = cq.from(Submission.class);
-
-        // Add conditions to the query
         Predicate assignmentPredicate = cb.equal(root.get("assignment").get("id"), assignmentId);
-
         cq.select(root).where(assignmentPredicate);
-
         Query<Submission> query = session.createQuery(cq);
         List<Submission> submissions = query.getResultList();
         session.close();
 
+        return submissions;
+    }
+
+    @Override
+    public Submission findBySubmissionId(Long id) {
+        Session session = sessionFactory.openSession();
+        Submission submission = session.get(Submission.class, id);
+        session.close();
+        return submission;
+    }
+
+    @Override
+    public void update(Submission submission) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.merge(submission);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Override
+    public List<Submission> getSubmissionsByStudentAndCourse(User student, Long courseId) {
+        Session session = sessionFactory.openSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Submission> cq = cb.createQuery(Submission.class);
+        Root<Submission> root = cq.from(Submission.class);
+        Predicate studentPredicate = cb.equal(root.get("student"), student);
+        Predicate coursePredicate = cb.equal(root.get("assignment").get("course").get("id"), courseId);
+        cq.select(root).where(cb.and(studentPredicate, coursePredicate));
+        Query<Submission> query = session.createQuery(cq);
+        List<Submission> submissions = query.getResultList();
+        session.close();
+        return submissions;
+    }
+
+    @Override
+    public List<Submission> getSubmissionsByCourse(Course course){
+        Session session = sessionFactory.openSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Submission> cq = cb.createQuery(Submission.class);
+        Root<Submission> root = cq.from(Submission.class);
+        Predicate coursePredicate = cb.equal(root.get("assignment").get("course"), course);
+        cq.select(root).where(coursePredicate);
+        Query<Submission> query = session.createQuery(cq);
+        List<Submission> submissions = query.getResultList();
+        session.close();
         return submissions;
     }
 }

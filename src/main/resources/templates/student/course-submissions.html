@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Submissions</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+    <!-- Sidebar -->
+    <div class="col-md-3 bg-light p-3 d-flex flex-column justify-content-between">
+      <div>
+        <h3>Course Menu</h3>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a th:href="@{/student/course/{id}(id=${course.id})}" class="nav-link">Course Details</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/student/course/{id}/assignments(id=${course.id})}" class="nav-link">Assignments</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link active">Submissions</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <a href="/logout" class="btn btn-danger w-100">Logout</a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 p-5">
+      <h1 th:text="'Submissions for ' + ${course.title}"></h1>
+      <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+          <th>Assignment Name</th>
+          <th>Description</th>
+          <th>Submitted At</th>
+          <th>Grade</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="submission : ${submissions}">
+          <td th:text="${submission.assignment.getTitle()}"></td>
+          <td th:text="${submission.assignment.getDescription()}"></td>
+          <td th:text="${submission.submittedAt}"></td>
+          <td>
+            <span th:if="${submission.grade != null}" th:text="${submission.grade}"></span>
+            <span th:if="${submission.grade == null}">Not Graded</span>
+          </td>
+        </tr>
+        <tr th:if="${submissions.size() == 0}">
+          <td colspan="4" class="text-center">No submissions found</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

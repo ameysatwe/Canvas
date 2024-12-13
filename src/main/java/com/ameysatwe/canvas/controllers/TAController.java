@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -59,17 +57,28 @@ public class TAController {
         return "ta/submissions";
     }
 //
-//    @GetMapping("/submissions/{submissionId}/view")
-//    public String viewSubmission(@PathVariable Long submissionId, Model model) {
-//        Submission submission = submissionService.findById(submissionId);
-//        model.addAttribute("submission", submission);
-//        return "ta-view-submission";
-//    }
-//
-//    @GetMapping("/submissions/{submissionId}/grade")
-//    public String gradeSubmission(@PathVariable Long submissionId, Model model) {
-//        Submission submission = submissionService.findById(submissionId);
-//        model.addAttribute("submission", submission);
-//        return "ta-grade-submission";
-//    }
+    @GetMapping("/submissions/{submissionId}/view")
+    public String viewSubmission(@PathVariable Long submissionId, Model model) {
+        Submission submission = submissionService.findById(submissionId);
+        model.addAttribute("submission", submission);
+        return "ta/view-submission";
+    }
+    @GetMapping("/submissions/{submissionId}/grade")
+    public String gradeSubmission(@PathVariable Long submissionId, Model model) {
+        Submission submission = submissionService.findById(submissionId);
+        model.addAttribute("submission", submission);
+        return "ta/grade-submission";
+    }
+
+    @PostMapping("/submission/{id}/grade")
+    public String gradeSubmission(@PathVariable Long id, @RequestParam("grade") String grade) {
+        Submission submission = submissionService.findById(id);
+        if (submission == null) {
+            throw new IllegalArgumentException("Submission not found");
+        }
+        submission.setGrade(grade);
+        submissionService.updateSubmission(submission);
+        return "redirect:/ta/courses/" + submission.getAssignment().getCourse().getId() +"/assignments/"+submission.getAssignment().getId()+ "/submissions";
+    }
+
 }

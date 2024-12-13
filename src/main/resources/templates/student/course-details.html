@@ -8,12 +8,24 @@
 <div class="container-fluid vh-100">
   <div class="row h-100">
     <!-- Sidebar -->
-    <div class="col-md-3 bg-light p-3">
-      <h3>Course Menu</h3>
-      <ul class="nav flex-column">
-        <li class="nav-item"><a href="#" class="nav-link active">Course Details</a></li>
-        <li class="nav-item"><a th:href="@{/student/course/{id}/assignments(id=${course.id})}" class="nav-link">Assignments</a></li>
-      </ul>
+    <div class="col-md-3 bg-light p-3 d-flex flex-column justify-content-between">
+      <div>
+        <h3>Course Menu</h3>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a href="#" class="nav-link active">Course Details</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/student/course/{id}/assignments(id=${course.id})}" class="nav-link">Assignments</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/student/course/{id}/submissions(id=${course.id})}" class="nav-link">Submissions</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <a href="/logout" class="btn btn-danger w-100">Logout</a>
+      </div>
     </div>
 
     <!-- Main Content -->
